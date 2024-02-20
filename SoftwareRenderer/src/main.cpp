@@ -33,13 +33,14 @@ int main()
 {
 	Matrix4f mat, rot, view;
 
-	Vector3f eye{ 0.0f, 1.0f, 0.0f };
+	Vector3f eye{ 3.0f, 1.0f, 0.0f };
 	Vector3f target{ 0.0, 0.0, -2.0 };
-	Vector3f right{ 1.0f, 0.0f, 0.0f };
-	Vector3f forward = normalize(target - eye);
-	Vector3f up = cross(forward, right);
-	
-	view = lookAt(eye, target, right, up);
+	Vector3f forward = normalize(eye - target);
+	Vector3f up{ 0.0f, 1.0f, 0.0f };
+	Vector3f right = cross(up, forward);
+	up = cross(forward, right);
+
+	view = lookAt(eye, forward, right, up);
 
 	std::vector<Vector3f> vertices =
 	{
@@ -74,7 +75,7 @@ int main()
 	Matrix4f proj = perspective(toRadians(60), (float)800 / 600, 1.0f, 10.0f);
 #endif
 	
-	translate(mat, { 0.0, 0.0, -2.0 });
+	
 
 	WNDCLASSEX wcx = { 0 };
 	wcx.cbSize = sizeof(WNDCLASSEX);
@@ -119,8 +120,8 @@ int main()
 				DispatchMessage(&msg);
 			}
 
-			//rotateZ(rot, 0.001 * dt);
-			rotateY(mat, 0.001 * dt);
+			mat = Matrix4f{};
+			translate(mat, target);
 			
 			renderer.startFrame();
 
