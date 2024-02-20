@@ -31,7 +31,7 @@ LRESULT WINAPI WindowProc(HWND window, UINT msg, WPARAM wp, LPARAM lp)
 
 int main()
 {
-	Matrix4f mat, rot, proj;
+	Matrix4f mat, rot;
 
 	std::vector<Vector3f> vertices =
 	{
@@ -59,9 +59,14 @@ int main()
 		{0, 4}, {1, 5}, {2, 6}, {3, 7},
 	};
 
-	scale(proj, { (float) 600 / 800, 1, 1});
-	scale(mat, { 0.1, 0.1, 0.1 });
-	translate(mat, { 5.0, 0.0, 0.0 });
+#if 0
+	Matrix4f proj;
+	scale(proj, { (float)600 / 800, 1, 1 });
+#else
+	Matrix4f proj = perspective(toRadians(60), (float)800 / 600, 1.0f, 10.0f);
+#endif
+	
+	translate(mat, { 0.0, 0.0, 2.0 });
 
 	WNDCLASSEX wcx = { 0 };
 	wcx.cbSize = sizeof(WNDCLASSEX);
@@ -80,7 +85,7 @@ int main()
 		CW_USEDEFAULT, CW_USEDEFAULT, rect.right - rect.left, rect.bottom - rect.top,
 		NULL, NULL, wcx.hInstance, NULL
 	);
-
+	
 	if (window == NULL)
 	{
 		std::cerr << "Failed to create window" << std::endl;
@@ -91,6 +96,11 @@ int main()
 	{
 		Renderer renderer{ window };
 		auto last = std::chrono::high_resolution_clock::now();
+		
+		//rotateX(mat, 45 * (PI / 180));
+		//rotateY(mat, 45 * (PI / 180));
+		//rotateZ(mat, 45 * (PI / 180));
+
 		while (run)
 		{
 			auto now = std::chrono::high_resolution_clock::now();
@@ -104,17 +114,23 @@ int main()
 				DispatchMessage(&msg);
 			}
 
-			rotateZ(rot, 0.001 * dt);
-			rotateZ(mat, 0.0015 * dt);
-			rotateX(mat, 0.001 * dt);
+			//rotateZ(rot, 0.001 * dt);
+			rotateZ(mat, 0.0009 * dt);
+			rotateX(mat, 0.0015 * dt);
 			rotateY(mat, 0.001 * -dt);
 			
 			renderer.startFrame();
 
 			for (auto&& line : indices)
 			{
-				auto p1 = renderer.deviceToPixelCoords(proj * rot * mat * Vector4f{ vertices[line.x] });
-				auto p2 = renderer.deviceToPixelCoords(proj * rot * mat * Vector4f{ vertices[line.y] });
+				auto p1v = proj * mat * Vector4f{ vertices[line.x] };
+				auto p2v = proj * mat * Vector4f{ vertices[line.y] };
+
+				p1v /= p1v.w;
+				p2v /= p2v.w;
+
+				auto p1 = renderer.deviceToPixelCoords(p1v);
+				auto p2 = renderer.deviceToPixelCoords(p2v);
 				renderer.drawLine(p1, p2);
 			}
 

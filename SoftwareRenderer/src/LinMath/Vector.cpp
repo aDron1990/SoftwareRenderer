@@ -20,3 +20,19 @@ Vector4f::Vector4f(const float val)
 
 Vector4f::Vector4f(const Vector3f& vec)
 	: x{ vec.x }, y{ vec.y }, z{ vec.z }, w{ 1.0f } {}
+
+const Vector4f Vector4f::operator/(const float val) const
+{
+	Vector4f result = *this;
+	result.x /= val;
+	result.y /= val;
+	result.z /= val;
+	result.w /= val;
+	return result;
+}
+
+Vector4f& Vector4f::operator/=(const float val)
+{
+	*this = operator/(val);
+	return *this;
+}

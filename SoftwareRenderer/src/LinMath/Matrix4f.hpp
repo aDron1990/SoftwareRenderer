@@ -19,3 +19,5 @@ void rotateX(Matrix4f& mat, const float angle);
 void rotateY(Matrix4f& mat, const float angle);
 void rotateZ(Matrix4f& mat, const float angle);
 void translate(Matrix4f& mat, const Vector3f& trans);
+
+Matrix4f perspective(const float fovy, const float aspect, const float n = 1.0f, const float f = 100.0f);

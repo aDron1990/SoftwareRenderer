@@ -107,3 +107,15 @@ void translate(Matrix4f& mat, const Vector3f& vec)
 	trans(3, 4) = vec.z;
 	mat = mat * trans;
 }
+
+Matrix4f perspective(const float fovy, const float aspect, const float n, const float f)
+{
+	Matrix4f mat;
+	mat(1, 1) = 1.0f / (aspect * tan(fovy / 2));
+	mat(2, 2) = 1.0f / tan(fovy / 2);
+	mat(3, 3) = -(f + n) / (f - n);
+	mat(3, 4) = -1.0f;
+	mat(4, 3) = -(2 * f * n) / (f - n);
+	mat(4, 4) = 0.0f;
+	return mat;
+}
