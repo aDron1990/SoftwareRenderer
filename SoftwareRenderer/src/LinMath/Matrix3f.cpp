@@ -49,7 +49,7 @@ Vector3f operator*(const Matrix3f& first, const Vector3f& second)
 	return result;
 }
 
-void scale(Matrix3f& mat, const Vector3f scale)
+void scale(Matrix3f& mat, const Vector3f& scale)
 {
 	Matrix3f mul;
 	mul(1, 1) = scale.x;

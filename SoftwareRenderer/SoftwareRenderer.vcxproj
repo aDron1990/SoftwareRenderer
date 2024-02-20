@@ -131,6 +131,7 @@
     <ClCompile Include="src\LinMath\Matrix2f.cpp" />
     <ClCompile Include="src\LinMath\Matrix2f.hpp" />
     <ClCompile Include="src\LinMath\Matrix3f.cpp" />
+    <ClCompile Include="src\LinMath\Matrix4f.cpp" />
     <ClCompile Include="src\LinMath\Vector.cpp" />
     <ClCompile Include="src\LinMath\Vector.hpp" />
     <ClCompile Include="src\Renderer.cpp" />
@@ -138,6 +139,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\LinMath\Matrix3f.hpp" />
+    <ClInclude Include="src\LinMath\Matrix4f.hpp" />
     <ClInclude Include="src\Renderer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

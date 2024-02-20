@@ -31,10 +31,7 @@ LRESULT WINAPI WindowProc(HWND window, UINT msg, WPARAM wp, LPARAM lp)
 
 int main()
 {
-	Vector4f vec4{ 1, 2, 3, 4 };
-	Vector2f vec2 = vec4;
-
-	Matrix3f mat, proj;
+	Matrix4f mat, rot, proj;
 
 	std::vector<Vector3f> vertices =
 	{
@@ -63,7 +60,8 @@ int main()
 	};
 
 	scale(proj, { (float) 600 / 800, 1, 1});
-	//scale(mat, { 0.1, 0.1, 0.1 });
+	scale(mat, { 0.1, 0.1, 0.1 });
+	translate(mat, { 5.0, 0.0, 0.0 });
 
 	WNDCLASSEX wcx = { 0 };
 	wcx.cbSize = sizeof(WNDCLASSEX);
@@ -106,16 +104,17 @@ int main()
 				DispatchMessage(&msg);
 			}
 
-			rotateX(mat, 0.001 * dt);
+			rotateZ(rot, 0.001 * dt);
 			rotateZ(mat, 0.0015 * dt);
+			rotateX(mat, 0.001 * dt);
 			rotateY(mat, 0.001 * -dt);
-
+			
 			renderer.startFrame();
 
 			for (auto&& line : indices)
 			{
-				auto p1 = renderer.deviceToPixelCoords(proj * mat * vertices[line.x]);
-				auto p2 = renderer.deviceToPixelCoords(proj * mat * vertices[line.y]);
+				auto p1 = renderer.deviceToPixelCoords(proj * rot * mat * Vector4f{ vertices[line.x] });
+				auto p2 = renderer.deviceToPixelCoords(proj * rot * mat * Vector4f{ vertices[line.y] });
 				renderer.drawLine(p1, p2);
 			}
 

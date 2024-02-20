@@ -30,4 +30,7 @@ struct Vector4f
 
 	operator Vector2f() const;
 	operator Vector3f() const;
+	Vector4f(const float val = 0.0f);
+	Vector4f(const Vector3f& vec);
+
 };

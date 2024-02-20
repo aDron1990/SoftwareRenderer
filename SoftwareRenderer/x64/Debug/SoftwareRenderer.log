@@ -1,6 +1,1 @@
-﻿  Renderer.cpp
-C:\Users\adron\dev\SoftwareRenderer\SoftwareRenderer\src\Renderer.cpp(96,35): warning C4244: =: преобразование "float" в "int", возможна потеря данных
-C:\Users\adron\dev\SoftwareRenderer\SoftwareRenderer\src\Renderer.cpp(97,37): warning C4244: =: преобразование "float" в "int", возможна потеря данных
-  SoftwareRenderer.vcxproj -> C:\Users\adron\dev\SoftwareRenderer\x64\Debug\SoftwareRenderer.exe
-  "pwsh.exe" не является внутренней или внешней
-  командой, исполняемой программой или пакетным файлом.
+﻿
