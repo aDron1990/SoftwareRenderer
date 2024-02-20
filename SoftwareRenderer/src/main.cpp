@@ -31,7 +31,15 @@ LRESULT WINAPI WindowProc(HWND window, UINT msg, WPARAM wp, LPARAM lp)
 
 int main()
 {
-	Matrix4f mat, rot;
+	Matrix4f mat, rot, view;
+
+	Vector3f eye{ 0.0f, 1.0f, 0.0f };
+	Vector3f target{ 0.0, 0.0, -2.0 };
+	Vector3f right{ 1.0f, 0.0f, 0.0f };
+	Vector3f forward = normalize(target - eye);
+	Vector3f up = cross(forward, right);
+	
+	view = lookAt(eye, target, right, up);
 
 	std::vector<Vector3f> vertices =
 	{
@@ -66,13 +74,14 @@ int main()
 	Matrix4f proj = perspective(toRadians(60), (float)800 / 600, 1.0f, 10.0f);
 #endif
 	
-	translate(mat, { 0.0, 0.0, 2.0 });
+	translate(mat, { 0.0, 0.0, -2.0 });
 
 	WNDCLASSEX wcx = { 0 };
 	wcx.cbSize = sizeof(WNDCLASSEX);
 	wcx.hInstance = GetModuleHandle(NULL);
 	wcx.lpszClassName = L"wndclass";
 	wcx.lpfnWndProc = WindowProc;
+	wcx.hCursor = LoadCursor(NULL, IDC_CROSS);
 
 	RegisterClassEx(&wcx);
 
@@ -96,10 +105,6 @@ int main()
 	{
 		Renderer renderer{ window };
 		auto last = std::chrono::high_resolution_clock::now();
-		
-		//rotateX(mat, 45 * (PI / 180));
-		//rotateY(mat, 45 * (PI / 180));
-		//rotateZ(mat, 45 * (PI / 180));
 
 		while (run)
 		{
@@ -115,16 +120,14 @@ int main()
 			}
 
 			//rotateZ(rot, 0.001 * dt);
-			rotateZ(mat, 0.0009 * dt);
-			rotateX(mat, 0.0015 * dt);
-			rotateY(mat, 0.001 * -dt);
+			rotateY(mat, 0.001 * dt);
 			
 			renderer.startFrame();
 
 			for (auto&& line : indices)
 			{
-				auto p1v = proj * mat * Vector4f{ vertices[line.x] };
-				auto p2v = proj * mat * Vector4f{ vertices[line.y] };
+				auto p1v = proj * view * mat * Vector4f{ vertices[line.x] };
+				auto p2v = proj * view * mat * Vector4f{ vertices[line.y] };
 
 				p1v /= p1v.w;
 				p2v /= p2v.w;

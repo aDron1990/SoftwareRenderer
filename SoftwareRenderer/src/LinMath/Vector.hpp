@@ -19,6 +19,12 @@ struct Vector3f
 	float z;
 
 	operator Vector2f() const;
+	Vector3f operator-(const Vector3f vec) const;
+	Vector3f operator+(const Vector3f vec) const;
+	Vector3f operator-() const;
+	const Vector3f operator/(const float val) const;
+	Vector3f& operator/=(const float val);
+
 };
 
 struct Vector4f
@@ -37,3 +43,6 @@ struct Vector4f
 	Vector4f(const Vector3f& vec);
 
 };
+
+Vector3f cross(const Vector3f& first, const Vector3f& second);
+Vector3f normalize(const Vector3f& vec);

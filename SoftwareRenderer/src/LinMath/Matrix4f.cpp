@@ -119,3 +119,12 @@ Matrix4f perspective(const float fovy, const float aspect, const float n, const 
 	mat(4, 4) = 0.0f;
 	return mat;
 }
+
+Matrix4f lookAt(const Vector3f& eye, const Vector3f& forward, const Vector3f& right, const Vector3f& up)
+{
+	Matrix4f view;
+	view(1, 1) = right.x;  view(1, 2) = up.x;  view(1, 3) = forward.x;  view(1, 4) = eye.x;
+	view(2, 1) = right.y;  view(2, 2) = up.y;  view(2, 3) = forward.y;  view(2, 4) = eye.y;
+	view(3, 1) = right.z;  view(1, 2) = up.z;  view(3, 3) = forward.z;  view(3, 4) = eye.z;
+	return view;
+}
